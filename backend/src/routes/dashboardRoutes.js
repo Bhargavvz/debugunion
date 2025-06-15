@@ -4,17 +4,19 @@ import { verifyFirebaseToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// All dashboard routes require authentication
-router.use(verifyFirebaseToken);
+// Test endpoint without auth (for debugging)
+router.get('/test', (req, res) => {
+  res.json({ success: true, message: 'Dashboard routes are working!' });
+});
 
 // Dashboard statistics
-router.get('/stats', dashboardController.getDashboardStats);
+router.get('/stats', verifyFirebaseToken, dashboardController.getDashboardStats);
 
 // Recent user activity
-router.get('/recent-issues', dashboardController.getRecentIssues);
-router.get('/recent-fixes', dashboardController.getRecentFixes);
+router.get('/recent-issues', verifyFirebaseToken, dashboardController.getRecentIssues);
+router.get('/recent-fixes', verifyFirebaseToken, dashboardController.getRecentFixes);
 
 // Trending content for dashboard
-router.get('/trending-issues', dashboardController.getTrendingIssuesForDashboard);
+router.get('/trending-issues', verifyFirebaseToken, dashboardController.getTrendingIssuesForDashboard);
 
 export default router;

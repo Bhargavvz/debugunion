@@ -2,12 +2,22 @@ import { ArrowRight, Code, Users, Zap, TrendingUp, DollarSign, Star, CheckCircle
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface LandingPageProps {
   onNavigate: (page: string) => void;
 }
 
 export function LandingPage({ onNavigate }: LandingPageProps) {
+  const { currentUser, logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
   const features = [
     {
       icon: Code,
@@ -65,12 +75,28 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
           </div>
           
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" onClick={() => onNavigate('auth')}>
-              Sign In
-            </Button>
-            <Button onClick={() => onNavigate('auth')}>
-              Get Started
-            </Button>
+            {currentUser ? (
+              <>
+                <span className="text-sm text-muted-foreground">
+                  Logged in as {currentUser.email}
+                </span>
+                <Button variant="outline" onClick={handleLogout}>
+                  Logout
+                </Button>
+                <Button onClick={() => onNavigate('dashboard')}>
+                  Go to Dashboard
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" onClick={() => onNavigate('auth')}>
+                  Sign In
+                </Button>
+                <Button onClick={() => onNavigate('auth')}>
+                  Get Started
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </nav>

@@ -18,9 +18,13 @@ class ApiService {
       async (config) => {
         try {
           const user = auth.currentUser;
+          console.log('API Request - Current user:', user?.uid);
           if (user) {
             const token = await user.getIdToken();
+            console.log('API Request - Got token:', token.substring(0, 50) + '...');
             config.headers.Authorization = `Bearer ${token}`;
+          } else {
+            console.log('API Request - No current user');
           }
         } catch (error) {
           console.error('Error getting auth token:', error);

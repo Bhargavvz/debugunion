@@ -169,19 +169,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try {
-      await apiService.logout();
+      // Try to call backend logout, but don't let it block Firebase logout
+      try {
+        await apiService.logout();
+      } catch (apiError) {
+        console.warn('Backend logout failed, continuing with Firebase logout:', apiError);
+      }
+      
+      // Always attempt Firebase signOut
       await signOut(auth);
+      setCurrentUser(null);
+      setUserProfile(null);
       
       toast({
         title: 'Logged out',
         description: 'You have been successfully logged out.',
       });
     } catch (error: any) {
+      // If even Firebase signOut fails, force clear state
       console.error('Logout error:', error);
+      setCurrentUser(null);
+      setUserProfile(null);
+      
       toast({
-        title: 'Logout failed',
-        description: error.message || 'An error occurred during logout.',
-        variant: 'destructive',
+        title: 'Logged out',
+        description: 'You have been logged out.',
       });
     }
   };

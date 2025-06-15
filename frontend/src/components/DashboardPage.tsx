@@ -57,20 +57,52 @@ export function DashboardPage({ onNavigate, onViewIssue }: DashboardPageProps) {
       try {
         setLoading(true);
         
-        // Fetch all dashboard data in parallel
+        // Fetch dashboard data with individual error handling
+        const fetchWithFallback = async (apiCall: () => Promise<any>, fallbackData: any) => {
+          try {
+            const response = await apiCall();
+            return response;
+          } catch (error: any) {
+            console.warn('API call failed, using fallback:', error.message);
+            return { data: fallbackData };
+          }
+        };
+
         const [statsResponse, recentIssuesResponse, recentFixesResponse, trendingResponse] = await Promise.all([
-          apiService.getDashboardStats(),
-          apiService.getRecentIssues({ limit: 5 }),
-          apiService.getRecentFixes({ limit: 5 }),
-          apiService.getTrendingIssues({ limit: 5 })
+          fetchWithFallback(
+            () => apiService.getDashboardStats(),
+            { stats: { user: { xp: 0, level: 1, issuesPosted: 0, issuesFixed: 0, bountyEarned: 0, badges: [] }, issues: { total: 0, open: 0, inProgress: 0, solved: 0, totalViews: 0, totalUpvotes: 0 }, fixes: { total: 0, accepted: 0, pending: 0, totalVotes: 0 }, comments: { total: 0, totalVotes: 0 } } }
+          ),
+          fetchWithFallback(
+            () => apiService.getRecentIssues({ limit: 5 }),
+            { issues: [] }
+          ),
+          fetchWithFallback(
+            () => apiService.getRecentFixes({ limit: 5 }),
+            { fixes: [] }
+          ),
+          fetchWithFallback(
+            () => apiService.getTrendingIssues({ limit: 5 }),
+            { issues: [] }
+          )
         ]);
 
         setStats(statsResponse.data.stats);
-        setRecentIssues(recentIssuesResponse.data.issues);
-        setRecentFixes(recentFixesResponse.data.fixes);
-        setTrendingIssues(trendingResponse.data.issues);
+        setRecentIssues(recentIssuesResponse.data.issues || []);
+        setRecentFixes(recentFixesResponse.data.fixes || []);
+        setTrendingIssues(trendingResponse.data.issues || []);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
+        // Set fallback data
+        setStats({
+          user: { xp: 0, level: 1, issuesPosted: 0, issuesFixed: 0, bountyEarned: 0, badges: [] },
+          issues: { total: 0, open: 0, inProgress: 0, solved: 0, totalViews: 0, totalUpvotes: 0 },
+          fixes: { total: 0, accepted: 0, pending: 0, totalVotes: 0 },
+          comments: { total: 0, totalVotes: 0 }
+        });
+        setRecentIssues([]);
+        setRecentFixes([]);
+        setTrendingIssues([]);
       } finally {
         setLoading(false);
       }

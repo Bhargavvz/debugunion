@@ -195,18 +195,18 @@ export function HomePage({ onNavigate, onViewIssue }: HomePageProps) {
                   </div>
                   <div>
                     <h3 className="font-semibold">{user.username}</h3>
-                    <p className="text-sm text-muted-foreground">{user.xp.toLocaleString()} XP</p>
+                    <p className="text-sm text-muted-foreground">{(user.xp ?? 0).toLocaleString()} XP</p>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <div className="font-semibold text-emerald-600">{user.issuesFixed}</div>
+                    <div className="font-semibold text-emerald-600">{user.issuesFixed || 0}</div>
                     <div className="text-muted-foreground">Issues Fixed</div>
                   </div>
                   <div>
-                    <div className="font-semibold text-primary">${user.bountyEarned}</div>
+                    <div className="font-semibold text-primary">${user.bountyEarned || 0}</div>
                     <div className="text-muted-foreground">Earned</div>
                   </div>
                 </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { LandingPage } from '@/components/LandingPage';
 import { AuthPage } from '@/components/AuthPage';
@@ -24,15 +24,16 @@ function AppContent() {
   const [selectedIssueId, setSelectedIssueId] = useState<string | null>(null);
   const { currentUser, loading } = useAuth();
 
-  // Redirect authenticated users from landing page to dashboard
-  useEffect(() => {
-    if (currentUser && currentPage === 'landing') {
-      setCurrentPage('dashboard');
-    }
-  }, [currentUser, currentPage]);
-
+  // Only redirect authenticated users to dashboard if they explicitly navigate to landing
+  // This prevents automatic redirect on initial page load
   const handleNavigate = (page: string) => {
-    // Handle authentication redirects
+    // Special handling for landing page navigation when authenticated
+    if (page === 'landing' && currentUser) {
+      setCurrentPage('dashboard');
+      return;
+    }
+
+    // Handle authentication redirects for protected pages
     if (!currentUser && ['home', 'discover', 'post-issue', 'dashboard', 'messages', 'leaderboard', 'profile', 'settings'].includes(page)) {
       setCurrentPage('auth');
       return;
