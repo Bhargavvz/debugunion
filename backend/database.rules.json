@@ -1,0 +1,138 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null && auth.uid == $uid",
+        "isAdmin": {
+          ".write": false
+        },
+        "xp": {
+          ".write": false
+        },
+        "level": {
+          ".write": false
+        },
+        "issuesPosted": {
+          ".write": false
+        },
+        "issuesFixed": {
+          ".write": false
+        },
+        "bountyEarned": {
+          ".write": false
+        },
+        "badges": {
+          ".write": false
+        },
+        "joinedAt": {
+          ".write": false
+        }
+      }
+    },
+    "issues": {
+      ".read": "auth != null",
+      "$issueId": {
+        ".write": "auth != null && (auth.uid == data.child('authorId').val() || !data.exists())",
+        "views": {
+          ".write": "auth != null"
+        },
+        "upvotes": {
+          ".write": "auth != null"
+        },
+        "downvotes": {
+          ".write": "auth != null"
+        },
+        "votedUsers": {
+          ".write": "auth != null"
+        },
+        "followers": {
+          ".write": "auth != null"
+        },
+        "status": {
+          ".write": "auth != null && (auth.uid == data.parent().child('authorId').val() || data.parent().child('authorId').val() == null)"
+        }
+      }
+    },
+    "comments": {
+      ".read": "auth != null",
+      "$commentId": {
+        ".write": "auth != null && (auth.uid == data.child('authorId').val() || !data.exists())",
+        "votes": {
+          ".write": "auth != null"
+        },
+        "votedUsers": {
+          ".write": "auth != null"
+        }
+      }
+    },
+    "fixes": {
+      ".read": "auth != null",
+      "$fixId": {
+        ".write": "auth != null && (auth.uid == data.child('authorId').val() || !data.exists())",
+        "isAccepted": {
+          ".write": "auth != null"
+        },
+        "votes": {
+          ".write": "auth != null"
+        },
+        "votedUsers": {
+          ".write": "auth != null"
+        },
+        "bountyAwarded": {
+          ".write": "auth != null"
+        }
+      }
+    },
+    "messages": {
+      "$messageId": {
+        ".read": "auth != null && (auth.uid == data.child('senderId').val() || auth.uid == data.child('recipientId').val())",
+        ".write": "auth != null && (auth.uid == data.child('senderId').val() || !data.exists())"
+      }
+    },
+    "conversations": {
+      "$conversationId": {
+        ".read": "auth != null && data.child('participants').hasChild(auth.uid)",
+        ".write": "auth != null && data.child('participants').hasChild(auth.uid)"
+      }
+    },
+    "notifications": {
+      "$userId": {
+        ".read": "auth != null && auth.uid == $userId",
+        ".write": "auth != null"
+      }
+    },
+    "leaderboard": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    "badges": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    "trending_tags": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    "system_config": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    "categories": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    "priorities": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    "issue_statuses": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    "notification_types": {
+      ".read": "auth != null",
+      ".write": false
+    }
+  }
+}

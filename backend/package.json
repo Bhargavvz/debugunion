@@ -1,0 +1,45 @@
+{
+  "name": "devbounty-backend",
+  "version": "1.0.0",
+  "description": "Backend API for DevBounty - Developer Community Platform",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "build": "echo 'No build step required'",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "express",
+    "firebase",
+    "api",
+    "nodejs",
+    "developer-community"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-validator": "^7.0.1",
+    "firebase-admin": "^12.7.0",
+    "helmet": "^7.2.0",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.29.4",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

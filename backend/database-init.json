@@ -1,0 +1,311 @@
+{
+  "badges": {
+    "first-fix": {
+      "id": "first-fix",
+      "name": "First Fix",
+      "description": "Submitted your first fix",
+      "icon": "Award",
+      "color": "yellow",
+      "rarity": "common",
+      "xpRequired": 0,
+      "criteria": "Submit your first fix to any issue"
+    },
+    "bug-slayer": {
+      "id": "bug-slayer",
+      "name": "Bug Slayer",
+      "description": "Fixed 10+ bugs",
+      "icon": "Bug",
+      "color": "emerald",
+      "rarity": "common",
+      "xpRequired": 500,
+      "criteria": "Fix 10 or more bugs"
+    },
+    "bounty-hunter": {
+      "id": "bounty-hunter",
+      "name": "Bounty Hunter",
+      "description": "Earned $500+ in bounties",
+      "icon": "DollarSign",
+      "color": "green",
+      "rarity": "rare",
+      "xpRequired": 1000,
+      "criteria": "Earn $500 or more in bounty rewards"
+    },
+    "helper": {
+      "id": "helper",
+      "name": "Helper",
+      "description": "Helped 50+ developers",
+      "icon": "Heart",
+      "color": "rose",
+      "rarity": "epic",
+      "xpRequired": 2500,
+      "criteria": "Help 50 or more developers"
+    },
+    "code-wizard": {
+      "id": "code-wizard",
+      "name": "Code Wizard",
+      "description": "Earned 5000+ XP",
+      "icon": "Zap",
+      "color": "purple",
+      "rarity": "legendary",
+      "xpRequired": 5000,
+      "criteria": "Accumulate 5000 or more XP"
+    },
+    "merge-master": {
+      "id": "merge-master",
+      "name": "Merge Master",
+      "description": "Accepted 5+ PRs",
+      "icon": "GitMerge",
+      "color": "blue",
+      "rarity": "rare",
+      "xpRequired": 750,
+      "criteria": "Have 5 or more fixes accepted"
+    },
+    "issue-reporter": {
+      "id": "issue-reporter",
+      "name": "Issue Reporter",
+      "description": "Posted 10+ issues",
+      "icon": "AlertCircle",
+      "color": "orange",
+      "rarity": "common",
+      "xpRequired": 200,
+      "criteria": "Post 10 or more issues"
+    },
+    "community-star": {
+      "id": "community-star",
+      "name": "Community Star",
+      "description": "Received 100+ upvotes",
+      "icon": "Star",
+      "color": "gold",
+      "rarity": "epic",
+      "xpRequired": 1500,
+      "criteria": "Receive 100 or more upvotes across all contributions"
+    }
+  },
+  "trending_tags": {
+    "react": {
+      "name": "React",
+      "count": 0,
+      "color": "#61DAFB",
+      "category": "frontend"
+    },
+    "nodejs": {
+      "name": "Node.js",
+      "count": 0,
+      "color": "#339933",
+      "category": "backend"
+    },
+    "javascript": {
+      "name": "JavaScript",
+      "count": 0,
+      "color": "#F7DF1E",
+      "category": "language"
+    },
+    "typescript": {
+      "name": "TypeScript",
+      "count": 0,
+      "color": "#3178C6",
+      "category": "language"
+    },
+    "python": {
+      "name": "Python",
+      "count": 0,
+      "color": "#3776AB",
+      "category": "language"
+    },
+    "css": {
+      "name": "CSS",
+      "count": 0,
+      "color": "#1572B6",
+      "category": "frontend"
+    },
+    "html": {
+      "name": "HTML",
+      "count": 0,
+      "color": "#E34F26",
+      "category": "frontend"
+    },
+    "api": {
+      "name": "API",
+      "count": 0,
+      "color": "#FF6B35",
+      "category": "backend"
+    },
+    "vue": {
+      "name": "Vue.js",
+      "count": 0,
+      "color": "#4FC08D",
+      "category": "frontend"
+    },
+    "angular": {
+      "name": "Angular",
+      "count": 0,
+      "color": "#DD0031",
+      "category": "frontend"
+    },
+    "mongodb": {
+      "name": "MongoDB",
+      "count": 0,
+      "color": "#47A248",
+      "category": "database"
+    },
+    "mysql": {
+      "name": "MySQL",
+      "count": 0,
+      "color": "#4479A1",
+      "category": "database"
+    },
+    "docker": {
+      "name": "Docker",
+      "count": 0,
+      "color": "#2496ED",
+      "category": "devops"
+    },
+    "aws": {
+      "name": "AWS",
+      "count": 0,
+      "color": "#FF9900",
+      "category": "cloud"
+    },
+    "firebase": {
+      "name": "Firebase",
+      "count": 0,
+      "color": "#FFCA28",
+      "category": "backend"
+    }
+  },
+  "system_config": {
+    "xp_rewards": {
+      "issue_posted": 10,
+      "fix_submitted": 15,
+      "fix_accepted": 50,
+      "comment_posted": 2,
+      "upvote_received": 1,
+      "daily_login": 5
+    },
+    "level_requirements": {
+      "1": 0,
+      "2": 100,
+      "3": 250,
+      "4": 500,
+      "5": 1000,
+      "6": 2000,
+      "7": 4000,
+      "8": 8000,
+      "9": 15000,
+      "10": 25000
+    },
+    "bounty_limits": {
+      "min_bounty": 0,
+      "max_bounty": 10000,
+      "default_bounty": 0
+    },
+    "rate_limits": {
+      "issues_per_hour": 10,
+      "comments_per_minute": 5,
+      "fixes_per_hour": 10,
+      "votes_per_minute": 20
+    }
+  },
+  "categories": {
+    "bug": {
+      "name": "Bug",
+      "description": "Software bugs and errors",
+      "color": "#EF4444",
+      "icon": "Bug"
+    },
+    "feature": {
+      "name": "Feature",
+      "description": "New feature requests",
+      "color": "#10B981",
+      "icon": "Plus"
+    },
+    "question": {
+      "name": "Question",
+      "description": "Help and questions",
+      "color": "#3B82F6",
+      "icon": "HelpCircle"
+    },
+    "discussion": {
+      "name": "Discussion",
+      "description": "General discussions",
+      "color": "#8B5CF6",
+      "icon": "MessageCircle"
+    }
+  },
+  "priorities": {
+    "low": {
+      "name": "Low",
+      "color": "#6B7280",
+      "level": 1
+    },
+    "medium": {
+      "name": "Medium",
+      "color": "#F59E0B",
+      "level": 2
+    },
+    "high": {
+      "name": "High",
+      "color": "#EF4444",
+      "level": 3
+    },
+    "urgent": {
+      "name": "Urgent",
+      "color": "#DC2626",
+      "level": 4
+    }
+  },
+  "issue_statuses": {
+    "open": {
+      "name": "Open",
+      "description": "Issue is open for fixes",
+      "color": "#10B981"
+    },
+    "in-progress": {
+      "name": "In Progress",
+      "description": "Someone is working on this",
+      "color": "#F59E0B"
+    },
+    "solved": {
+      "name": "Solved",
+      "description": "Issue has been resolved",
+      "color": "#8B5CF6"
+    },
+    "closed": {
+      "name": "Closed",
+      "description": "Issue is closed",
+      "color": "#6B7280"
+    }
+  },
+  "notification_types": {
+    "issue_comment": {
+      "title": "New Comment",
+      "icon": "MessageCircle",
+      "color": "#3B82F6"
+    },
+    "fix_submitted": {
+      "title": "Fix Submitted",
+      "icon": "Code",
+      "color": "#10B981"
+    },
+    "bounty_awarded": {
+      "title": "Bounty Awarded",
+      "icon": "DollarSign",
+      "color": "#F59E0B"
+    },
+    "badge_earned": {
+      "title": "Badge Earned",
+      "icon": "Award",
+      "color": "#8B5CF6"
+    },
+    "follow": {
+      "title": "New Follower",
+      "icon": "UserPlus",
+      "color": "#EF4444"
+    },
+    "message": {
+      "title": "New Message",
+      "icon": "Mail",
+      "color": "#06B6D4"
+    }
+  }
+}
