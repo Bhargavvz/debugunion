@@ -9,9 +9,10 @@ import { formatDistanceToNow } from 'date-fns';
 interface IssueCardProps {
   issue: Issue;
   onViewIssue: (id: string) => void;
+  onViewProfile?: (id: string) => void;
 }
 
-export function IssueCard({ issue, onViewIssue }: IssueCardProps) {
+export function IssueCard({ issue, onViewIssue, onViewProfile }: IssueCardProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'open': return 'bg-emerald-500';
@@ -28,6 +29,13 @@ export function IssueCard({ issue, onViewIssue }: IssueCardProps) {
       case 'feature': return 'secondary';
       case 'question': return 'outline';
       default: return 'secondary';
+    }
+  };
+
+  const handleAuthorClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onViewProfile && issue.author?.id) {
+      onViewProfile(issue.author.id);
     }
   };
 
@@ -90,7 +98,10 @@ export function IssueCard({ issue, onViewIssue }: IssueCardProps) {
         {/* Footer */}
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-1">
+            <div 
+              className="flex items-center space-x-1 cursor-pointer hover:text-primary transition-colors"
+              onClick={handleAuthorClick}
+            >
               <Avatar className="w-5 h-5">
                 <AvatarImage src={issue.author.avatar} />
                 <AvatarFallback className="text-xs">
@@ -102,7 +113,7 @@ export function IssueCard({ issue, onViewIssue }: IssueCardProps) {
             
             <div className="flex items-center space-x-1">
               <Clock className="w-3 h-3" />
-              <span className="text-xs">{formatDistanceToNow(issue.createdAt, { addSuffix: true })}</span>
+              <span className="text-xs">{formatDistanceToNow(new Date(issue.createdAt), { addSuffix: true })}</span>
             </div>
           </div>
           
@@ -113,7 +124,7 @@ export function IssueCard({ issue, onViewIssue }: IssueCardProps) {
             </div>
             <div className="flex items-center space-x-1">
               <MessageSquare className="w-3 h-3" />
-              <span className="text-xs">{issue.comments.length}</span>
+              <span className="text-xs">{issue.comments?.length || 0}</span>
             </div>
             {issue.githubRepo && <GitBranch className="w-3 h-3" />}
           </div>

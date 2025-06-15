@@ -22,6 +22,7 @@ import { SortOption, FilterCategory } from '@/types';
 
 interface DiscoverPageProps {
   onViewIssue: (id: string) => void;
+  onViewProfile?: (id: string) => void;
 }
 
 const sortOptions = [
@@ -39,7 +40,7 @@ const categories = [
   { value: 'discussion', label: 'Discussions' },
 ];
 
-export function DiscoverPage({ onViewIssue }: DiscoverPageProps) {
+export function DiscoverPage({ onViewIssue, onViewProfile }: DiscoverPageProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('newest');
   const [category, setCategory] = useState<FilterCategory>('all');
@@ -238,7 +239,12 @@ export function DiscoverPage({ onViewIssue }: DiscoverPageProps) {
         {sortedIssues.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {sortedIssues.map((issue: any) => (
-              <IssueCard key={issue.id} issue={issue} onViewIssue={onViewIssue} />
+              <IssueCard 
+                key={issue.id} 
+                issue={issue} 
+                onViewIssue={onViewIssue} 
+                onViewProfile={onViewProfile} 
+              />
             ))}
           </div>
         ) : (

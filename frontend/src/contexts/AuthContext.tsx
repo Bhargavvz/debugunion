@@ -47,9 +47,63 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (currentUser) {
       try {
         const response = await apiService.getCurrentUser();
-        setUserProfile(response.data.user);
+        if (response && response.data && response.data.user) {
+          setUserProfile(response.data.user);
+        } else {
+          // If we get a response but no user data, create a minimal profile
+          console.warn('No user profile data returned from API, using minimal profile');
+          setUserProfile({
+            id: currentUser.uid,
+            username: currentUser.displayName || currentUser.email?.split('@')[0] || 'User',
+            email: currentUser.email,
+            avatar: currentUser.photoURL || '',
+            xp: 0,
+            level: 1,
+            issuesPosted: 0,
+            issuesFixed: 0,
+            bountyEarned: 0,
+            badges: [],
+            joinedAt: currentUser.metadata.creationTime || new Date(),
+            lastActive: new Date(),
+            isOnline: true,
+            skills: [],
+            preferences: {
+              theme: 'system',
+              emailNotifications: true,
+              pushNotifications: true,
+              publicProfile: true,
+              showEmail: false,
+              language: 'en'
+            }
+          });
+        }
       } catch (error) {
         console.error('Error fetching user profile:', error);
+        // Create a minimal profile from Firebase user data if API fails
+        setUserProfile({
+          id: currentUser.uid,
+          username: currentUser.displayName || currentUser.email?.split('@')[0] || 'User',
+          email: currentUser.email,
+          avatar: currentUser.photoURL || '',
+          xp: 0,
+          level: 1,
+          issuesPosted: 0,
+          issuesFixed: 0,
+          bountyEarned: 0,
+          badges: [],
+          joinedAt: currentUser.metadata.creationTime || new Date(),
+          lastActive: new Date(),
+          isOnline: true,
+          skills: [],
+          preferences: {
+            theme: 'system',
+            emailNotifications: true,
+            pushNotifications: true,
+            publicProfile: true,
+            showEmail: false,
+            language: 'en'
+          }
+        });
       }
     } else {
       setUserProfile(null);
@@ -60,14 +114,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
       if (user) {
-        await refreshUserProfile();
+        try {
+          await refreshUserProfile();
+        } catch (error) {
+          console.error('Failed to load user profile:', error);
+          // Continue even if profile loading fails
+        }
       } else {
         setUserProfile(null);
       }
+      // Always set loading to false, even if profile fetch fails
       setLoading(false);
     });
 
-    return unsubscribe;
+    // Set a timeout to ensure loading state is resolved even if Firebase auth is slow
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+
+    return () => {
+      unsubscribe();
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   const register = async (
@@ -232,7 +300,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };

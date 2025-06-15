@@ -13,10 +13,11 @@ import { useAuth } from '@/contexts/AuthContext';
 
 interface IssueDetailPageProps {
   issueId: string;
-  onNavigate: (page: string) => void;
+  onNavigate: (page: string, params?: any) => void;
+  onViewProfile?: (id: string) => void;
 }
 
-export function IssueDetailPage({ issueId, onNavigate }: IssueDetailPageProps) {
+export function IssueDetailPage({ issueId, onNavigate, onViewProfile }: IssueDetailPageProps) {
   const [newFix, setNewFix] = useState('');
   const [isSubmittingFix, setIsSubmittingFix] = useState(false);
   const [issue, setIssue] = useState<any>(null);
@@ -345,7 +346,11 @@ export function IssueDetailPage({ issueId, onNavigate }: IssueDetailPageProps) {
                 ))}
               </div>
 
-              <Button variant="outline" className="w-full">
+              <Button 
+                variant="outline" 
+                className="w-full" 
+                onClick={() => onViewProfile ? onViewProfile(issue.author.id) : onNavigate('profile', { userId: issue.author.id })}
+              >
                 <User className="h-4 w-4 mr-2" />
                 View Profile
               </Button>

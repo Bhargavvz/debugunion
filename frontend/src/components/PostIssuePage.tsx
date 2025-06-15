@@ -99,6 +99,8 @@ export function PostIssuePage({ onNavigate }: PostIssuePageProps) {
         githubRepo: githubRepo || undefined,
       };
 
+      // Add a small delay to avoid rate limiting
+      await new Promise(resolve => setTimeout(resolve, 500));
       await apiService.createIssue(issueData);
       
       toast({
@@ -107,13 +109,37 @@ export function PostIssuePage({ onNavigate }: PostIssuePageProps) {
       });
       
       onNavigate('discover');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error posting issue:', error);
-      toast({
-        title: "Error",
-        description: "Failed to post issue. Please try again.",
-        variant: "destructive",
-      });
+      
+      // Handle specific error types
+      if (error.response) {
+        if (error.response.status === 429) {
+          toast({
+            title: "Rate Limited",
+            description: "You're posting too quickly. Please wait a moment and try again.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: error.response.data?.message || "Failed to post issue. Please try again.",
+            variant: "destructive",
+          });
+        }
+      } else if (error.request) {
+        toast({
+          title: "Network Error",
+          description: "Unable to connect to the server. Please check your internet connection.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to post issue. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }

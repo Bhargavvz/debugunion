@@ -22,11 +22,12 @@ import './App.css';
 function AppContent() {
   const [currentPage, setCurrentPage] = useState<Page>('landing');
   const [selectedIssueId, setSelectedIssueId] = useState<string | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const { currentUser, loading } = useAuth();
 
   // Only redirect authenticated users to dashboard if they explicitly navigate to landing
   // This prevents automatic redirect on initial page load
-  const handleNavigate = (page: string) => {
+  const handleNavigate = (page: string, params?: any) => {
     // Special handling for landing page navigation when authenticated
     if (page === 'landing' && currentUser) {
       setCurrentPage('dashboard');
@@ -39,8 +40,17 @@ function AppContent() {
       return;
     }
 
-    setCurrentPage(page as Page);
+    // Reset state when navigating
     setSelectedIssueId(null);
+    
+    // Handle profile navigation with userId
+    if (page === 'profile' && params?.userId) {
+      setSelectedUserId(params.userId);
+    } else {
+      setSelectedUserId(null);
+    }
+
+    setCurrentPage(page as Page);
   };
 
   const handleViewIssue = (issueId: string) => {
@@ -51,7 +61,17 @@ function AppContent() {
     setSelectedIssueId(issueId);
     setCurrentPage('home'); // We'll render issue detail instead
   };
+  
+  const handleViewProfile = (userId: string) => {
+    if (!currentUser) {
+      setCurrentPage('auth');
+      return;
+    }
+    setSelectedUserId(userId);
+    setCurrentPage('profile');
+  };
 
+  // Show loading page while authentication is being determined
   if (loading) {
     return <LoadingPage />;
   }
@@ -88,21 +108,36 @@ function AppContent() {
 
     switch (currentPage) {
       case 'home':
-        return <HomePage onNavigate={handleNavigate} onViewIssue={handleViewIssue} />;
+        return <HomePage 
+          onNavigate={handleNavigate} 
+          onViewIssue={handleViewIssue} 
+          onViewProfile={handleViewProfile} 
+        />;
       case 'discover':
-        return <DiscoverPage onViewIssue={handleViewIssue} />;
+        return <DiscoverPage 
+          onViewIssue={handleViewIssue} 
+          onViewProfile={handleViewProfile} 
+        />;
       case 'post-issue':
         return <PostIssuePage onNavigate={handleNavigate} />;
       case 'dashboard':
-        return <DashboardPage onNavigate={handleNavigate} onViewIssue={handleViewIssue} />;
+        return <DashboardPage 
+          onNavigate={handleNavigate} 
+          onViewIssue={handleViewIssue} 
+          onViewProfile={handleViewProfile} 
+        />;
       case 'messages':
-        return <MessagesPage />;
+        return <MessagesPage onViewProfile={handleViewProfile} />;
       case 'leaderboard':
-        return <LeaderboardPage />;
+        return <LeaderboardPage onViewProfile={handleViewProfile} />;
       case 'profile':
-        return <ProfilePage onNavigate={handleNavigate} />;
+        return <ProfilePage 
+          onNavigate={handleNavigate} 
+          userId={selectedUserId} 
+          onViewIssue={handleViewIssue} 
+        />;
       case 'settings':
-        return <SettingsPage />;
+        return <SettingsPage onNavigate={handleNavigate} />;
       default:
         return <NotFoundPage onNavigate={handleNavigate} />;
     }

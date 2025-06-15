@@ -39,12 +39,34 @@ class ApiService {
     // Response interceptor for error handling
     this.api.interceptors.response.use(
       (response: AxiosResponse) => response,
-      (error) => {
+      async (error) => {
+        const originalRequest = error.config;
+        
+        // Handle rate limiting (429 Too Many Requests)
+        if (error.response?.status === 429 && !originalRequest._retry) {
+          originalRequest._retry = true;
+          console.warn('Rate limited, retrying after delay');
+          
+          // Wait for 2 seconds before retrying
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          return this.api(originalRequest);
+        }
+        
+        // Handle unauthorized access (401)
         if (error.response?.status === 401) {
-          // Handle unauthorized access
           console.error('Unauthorized access - redirecting to login');
           // You can add redirect logic here
         }
+        
+        // Log other errors
+        if (error.response) {
+          console.error(`API Error ${error.response.status}:`, error.response.data);
+        } else if (error.request) {
+          console.error('API Request Error (No Response):', error.request);
+        } else {
+          console.error('API Error:', error.message);
+        }
+        
         return Promise.reject(error);
       }
     );
@@ -295,6 +317,43 @@ class ApiService {
   async getRecentFixes(params?: { limit?: number }) {
     const response = await this.api.get('/dashboard/recent-fixes', { params });
     return response.data;
+  }
+
+  // User badges
+  async getUserBadges(userId?: string) {
+    const endpoint = userId ? `/users/${userId}/badges` : '/users/me/badges';
+    const response = await this.api.get(endpoint);
+    return response.data;
+  }
+
+  // Progress tracking
+  async getUserProgress() {
+    const response = await this.api.get('/users/me/progress');
+    return response.data;
+  }
+
+  // User achievements
+  async getUserAchievements() {
+    const response = await this.api.get('/users/me/achievements');
+    return response.data;
+  }
+
+  // Utility method to safely make API calls with fallback data
+  async safeApiCall<T>(apiCall: () => Promise<any>, fallbackData: T): Promise<{ data: T; fromFallback: boolean }> {
+    try {
+      const response = await apiCall();
+      return { data: response.data, fromFallback: false };
+    } catch (error: any) {
+      console.warn('API call failed, using fallback data:', error.message);
+      
+      // If it's a 404 or 429, use fallback data
+      if (error.response && (error.response.status === 404 || error.response.status === 429)) {
+        return { data: fallbackData, fromFallback: true };
+      }
+      
+      // For other errors, rethrow
+      throw error;
+    }
   }
 }
 
