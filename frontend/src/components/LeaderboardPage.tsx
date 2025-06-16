@@ -322,15 +322,15 @@ export function LeaderboardPage({ onViewProfile }: LeaderboardPageProps) {
               </CardHeader>
               <CardContent className="text-center">
                 <div className="text-2xl font-bold text-primary mb-2">
-                  {entry.score.toLocaleString()} XP
+                  {(entry.score || entry.xp || 0).toLocaleString()} XP
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div>
-                    <div className="font-semibold text-emerald-600">{entry.user.issuesFixed}</div>
+                    <div className="font-semibold text-emerald-600">{entry.user.issuesFixed || 0}</div>
                     <div className="text-muted-foreground">Fixed</div>
                   </div>
                   <div>
-                    <div className="font-semibold text-blue-600">${entry.user.bountyEarned}</div>
+                    <div className="font-semibold text-blue-600">${entry.user.bountyEarned || 0}</div>
                     <div className="text-muted-foreground">Earned</div>
                   </div>
                 </div>

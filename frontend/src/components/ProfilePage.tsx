@@ -366,8 +366,8 @@ export function ProfilePage({ onNavigate, userId, onViewIssue }: ProfilePageProp
 
   // Calculate XP progress
   const { progressPercentage, xpNeeded } = calculateXpProgress(
-    profileUser.xp, 
-    profileUser.level
+    profileUser?.xp || 0, 
+    profileUser?.level || 1
   );
 
   return (
@@ -377,33 +377,33 @@ export function ProfilePage({ onNavigate, userId, onViewIssue }: ProfilePageProp
         <CardContent className="pt-6">
           <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">
             <Avatar className="w-24 h-24">
-              <AvatarImage src={profileUser.avatar} />
+              <AvatarImage src={profileUser?.avatar} />
               <AvatarFallback className="text-2xl">
-                {profileUser.username.slice(0, 2).toUpperCase()}
+                {profileUser?.username ? profileUser.username.slice(0, 2).toUpperCase() : 'UN'}
               </AvatarFallback>
             </Avatar>
             
             <div className="flex-1">
               <div className="flex items-center space-x-3 mb-2">
-                <h1 className="text-3xl font-bold">{profileUser.username}</h1>
-                {profileUser.isOnline && (
+                <h1 className="text-3xl font-bold">{profileUser?.username || 'User'}</h1>
+                {profileUser?.isOnline && (
                   <div className="w-3 h-3 bg-green-500 rounded-full" />
                 )}
                 <Badge className="bg-primary/10 text-primary">
-                  Level {profileUser.level}
+                  Level {profileUser?.level || 1}
                 </Badge>
               </div>
               
-              <p className="text-muted-foreground mb-4">{profileUser.bio || 'No bio provided'}</p>
+              <p className="text-muted-foreground mb-4">{profileUser?.bio || 'No bio provided'}</p>
               
               <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                {profileUser.company && (
+                {profileUser?.company && (
                   <div className="flex items-center">
                     <Building className="w-4 h-4 mr-1" />
                     {profileUser.company}
                   </div>
                 )}
-                {profileUser.location && (
+                {profileUser?.location && (
                   <div className="flex items-center">
                     <MapPin className="w-4 h-4 mr-1" />
                     {profileUser.location}
@@ -411,9 +411,9 @@ export function ProfilePage({ onNavigate, userId, onViewIssue }: ProfilePageProp
                 )}
                 <div className="flex items-center">
                   <Calendar className="w-4 h-4 mr-1" />
-                  Joined {formatDistanceToNow(new Date(profileUser.joinedAt), { addSuffix: true })}
+                  Joined {profileUser?.joinedAt ? formatDistanceToNow(new Date(profileUser.joinedAt), { addSuffix: true }) : 'recently'}
                 </div>
-                {!isOwnProfile && profileUser.lastActive && (
+                {!isOwnProfile && profileUser?.lastActive && (
                   <div className="flex items-center">
                     <Calendar className="w-4 h-4 mr-1" />
                     Active {formatDistanceToNow(new Date(profileUser.lastActive), { addSuffix: true })}
@@ -422,7 +422,7 @@ export function ProfilePage({ onNavigate, userId, onViewIssue }: ProfilePageProp
               </div>
               
               <div className="flex flex-wrap items-center space-x-2 mt-4">
-                {profileUser.githubUrl && (
+                {profileUser?.githubUrl && (
                   <Button variant="outline" size="sm" asChild>
                     <a href={profileUser.githubUrl} target="_blank" rel="noopener noreferrer">
                       <Github className="w-4 h-4 mr-2" />
@@ -430,7 +430,7 @@ export function ProfilePage({ onNavigate, userId, onViewIssue }: ProfilePageProp
                     </a>
                   </Button>
                 )}
-                {profileUser.linkedinUrl && (
+                {profileUser?.linkedinUrl && (
                   <Button variant="outline" size="sm" asChild>
                     <a href={profileUser.linkedinUrl} target="_blank" rel="noopener noreferrer">
                       <Linkedin className="w-4 h-4 mr-2" />
@@ -438,7 +438,7 @@ export function ProfilePage({ onNavigate, userId, onViewIssue }: ProfilePageProp
                     </a>
                   </Button>
                 )}
-                {profileUser.websiteUrl && (
+                {profileUser?.websiteUrl && (
                   <Button variant="outline" size="sm" asChild>
                     <a href={profileUser.websiteUrl} target="_blank" rel="noopener noreferrer">
                       <Globe className="w-4 h-4 mr-2" />

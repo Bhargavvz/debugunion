@@ -103,12 +103,12 @@ export function IssueCard({ issue, onViewIssue, onViewProfile }: IssueCardProps)
               onClick={handleAuthorClick}
             >
               <Avatar className="w-5 h-5">
-                <AvatarImage src={issue.author.avatar} />
+                <AvatarImage src={issue.author?.avatar} />
                 <AvatarFallback className="text-xs">
-                  {issue.author.username.slice(0, 2).toUpperCase()}
+                  {issue.author?.username ? issue.author.username.slice(0, 2).toUpperCase() : 'UN'}
                 </AvatarFallback>
               </Avatar>
-              <span className="text-xs">{issue.author.username}</span>
+              <span className="text-xs">{issue.author?.username || 'Unknown'}</span>
             </div>
             
             <div className="flex items-center space-x-1">

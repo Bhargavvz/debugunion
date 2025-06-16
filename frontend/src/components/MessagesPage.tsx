@@ -220,6 +220,7 @@ export function MessagesPage({ onViewProfile }: MessagesPageProps) {
         recipient: recipient,
         content: newMessage,
         createdAt: new Date(),
+        timestamp: new Date().toISOString(),
         isRead: false,
         type: 'direct'
       };

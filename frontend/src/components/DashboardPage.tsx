@@ -148,7 +148,7 @@ export function DashboardPage({ onNavigate, onViewIssue, onViewProfile }: Dashbo
     
     // Avoid division by zero
     const levelRange = xpForNextLevel - currentLevelXp;
-    const progressPercentage = levelRange > 0 ? (xpProgress / levelRange) * 100 : 0;
+    const progressPercentage = levelRange > 0 ? Math.min(100, Math.max(0, (xpProgress / levelRange) * 100)) : 0;
     
     return {
       progressPercentage,
