@@ -618,4 +618,4 @@ For support, please open an issue on GitHub or contact the development team.
 
 ---
 
-**Built with ❤️ by the DebugUnion Team**
+**Built with ❤️ by Bhargav**
